@@ -1,29 +1,31 @@
-import * as React from "react";
-import { ethers } from "ethers";
-import './App.css';
+import React, { useState } from 'react';
 
-export default function App() {
+function App() {
 
   const wave = () => {
-    
+    // setCount(count + 1);
   }
-  
+
+  // const [count, setCount] = useState(0);
+  const [value, setValue] = useState("");
+
   return (
-    <div className="mainContainer">
+    <div className="m-auto flex justify-center my-4">
 
-      <div className="dataContainer">
-        <div className="header">
-        👋 Hey there!
+      <div className="flex flex-col">
+        <h1 className="text-6xl text-center font-black text-gray-900 py-8">Wave Portal</h1>
+        <div className="text-xl text-center font-light text-gray-700 py-8">
+          Connect your wallet, write your message, and then wave!
         </div>
-
-        <div className="bio">
-        I am farza and I worked on self-driving cars so that's pretty cool right? Connect your Ethereum wallet and wave at me!
+        <div className="m-auto">
+          <div className="flex flex-col justify-center">
+            <textarea onChange={event => setValue(event.target.value)} placeholder="Enter your message here :)" className="resize-none w-96 h-48 border-2 p-2 my-4"></textarea>
+            <button className="p-2 border border-black"><p>Wave at me!</p></button>
+          </div>
         </div>
-
-        <button className="waveButton" onClick={wave}>
-          Wave at Me
-        </button>
       </div>
     </div>
   );
 }
+
+export default App;
