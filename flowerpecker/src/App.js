@@ -6,9 +6,7 @@ import WaveLogHeader from './WaveLog/WaveLogHeader';
 
 function App() {
   const [waveMessage, setWaveMessage] = useState("");
-
   const [currentAccount, setCurrentAccount] = useState("");
-
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -89,7 +87,7 @@ function App() {
     }
   }
 
-  // const [count, setCount] = useState(0);
+  
 
   return (
     <div className="m-auto flex justify-center my-4" style={{ maxWidth: "800px" }}>
