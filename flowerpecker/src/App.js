@@ -14,7 +14,7 @@ function App() {
     checkIfWalletIsConnected();
   }, [])
 
-  const contractAddress = '0x6013fe7E69C85a7aAE7b41e78De2Ca88E74642d6';
+  const contractAddress = '0xBb4fe408E0ff18C5fFbC9b12783EFDf8B5C00eE5';
   const contractABI = ABI.abi;
 
   const checkIfWalletIsConnected = async () => {
