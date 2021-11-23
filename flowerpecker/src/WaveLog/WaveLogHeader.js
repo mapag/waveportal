@@ -8,7 +8,7 @@ function WaveLogHeader() {
 	const [waveCount, setWaveCount] = useState(-1);
   const [allWaves, setAllWaves] = useState([]);
 
-	const contractAddress = '0xBb4fe408E0ff18C5fFbC9b12783EFDf8B5C00eE5';
+	const contractAddress = '0x8981b9bCF4d84a5aBf6eC36d88cFE3C23C684262';
 	const contractABI = ABI.abi;
 
 	useEffect(() => {
