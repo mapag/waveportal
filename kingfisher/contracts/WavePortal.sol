@@ -17,6 +17,7 @@ contract WavePortal {
     }
 
     Wave[] waves;
+    mapping(address => uint256) public lastWavedAt;
 
     constructor() payable {
         console.log("Initializing Wave Portal smart contract");
@@ -24,8 +25,15 @@ contract WavePortal {
     }
 
     function wave(string memory _waveMessage) public {
+        require(
+            lastWavedAt[msg.sender] + 15 minutes < block.timestamp,
+            "Wait 15m"
+        );
+
         totalWaves += 1;
         console.log("%s has waved!", msg.sender);
+
+        lastWavedAt[msg.sender] = block.timestamp;
 
         waves.push(Wave(msg.sender, _waveMessage, block.timestamp));
 
