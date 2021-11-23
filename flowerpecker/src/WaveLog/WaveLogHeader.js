@@ -4,9 +4,9 @@ import ABI from '../utils/WavePortal.json'
 
 import WaveLogBody from './WaveLogBody';
 
-function WaveLogHeader() {
+function WaveLogHeader(props) {
 	const [waveCount, setWaveCount] = useState(-1);
-  const [allWaves, setAllWaves] = useState([]);
+	const [allWaves, setAllWaves] = useState([]);
 
 	const contractAddress = '0xBb4fe408E0ff18C5fFbC9b12783EFDf8B5C00eE5';
 	const contractABI = ABI.abi;
@@ -14,7 +14,7 @@ function WaveLogHeader() {
 	useEffect(() => {
 		getTotalWaves();
 		getAllWaves();
-	}, [])
+	}, [props.refreshWaves]);
 
 	const getAllWaves = async () => {
 		try {
@@ -80,7 +80,7 @@ function WaveLogHeader() {
 			<p className="text-4xl font-extrabold text-gray-800 py-4">Wave log 👀</p>
 			<p>Check out all these people out here waving!</p>
 			{waveCount !== -1 && <p>We already have {waveCount} waves</p>}
-			{allWaves.map((wave) => <WaveLogBody wave={wave} />)}
+			{allWaves.map((wave, i) => <WaveLogBody wave={wave} key={i} />)}
 		</div>
 	)
 }

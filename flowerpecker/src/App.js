@@ -7,6 +7,7 @@ import WaveLogHeader from './WaveLog/WaveLogHeader';
 function App() {
   const [waveMessage, setWaveMessage] = useState("");
   const [currentAccount, setCurrentAccount] = useState("");
+  const [refreshWaves, setRefreshWaves] = useState(false);
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -78,6 +79,7 @@ function App() {
 
         await waveTxn.wait();
         console.log("Mined -- ", waveTxn.hash);
+        setRefreshWaves(true);
 
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -110,7 +112,7 @@ function App() {
             <button className="p-2 border border-black" onClick={wave}><p>Wave at me!</p></button>
           </div>
         </div>
-        <WaveLogHeader></WaveLogHeader>
+        <WaveLogHeader refreshWaves={refreshWaves}></WaveLogHeader>
       </div>
 
     </div >
