@@ -84,7 +84,6 @@ function App() {
         } else {
           console.log("Ethereum object doesn't exist!");
         }
-
       }
     }
     catch (error) {
