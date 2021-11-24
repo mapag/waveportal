@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from "ethers";
-import ABI from '../utils/WavePortal.json'
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../utils/Constants';
 
 import WaveLogBody from './WaveLogBody';
 
-function WaveLogHeader() {
+function WaveLogHeader(props) {
 	const [waveCount, setWaveCount] = useState(-1);
-  const [allWaves, setAllWaves] = useState([]);
-
-	const contractAddress = '0x8981b9bCF4d84a5aBf6eC36d88cFE3C23C684262';
-	const contractABI = ABI.abi;
+	const [allWaves, setAllWaves] = useState([]);
 
 	useEffect(() => {
-		getTotalWaves();
-		getAllWaves();
-	}, [])
+		if (!props.sendingMessage) {
+			getTotalWaves();
+			getAllWaves();
+		}
+
+	}, [props.sendingMessage]);
 
 	const getAllWaves = async () => {
 		try {
@@ -22,7 +22,7 @@ function WaveLogHeader() {
 			if (ethereum) {
 				const provider = new ethers.providers.Web3Provider(ethereum);
 				const signer = provider.getSigner();
-				const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+				const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
 				/*
 				 * Call the getAllWaves method from your Smart Contract
@@ -62,7 +62,7 @@ function WaveLogHeader() {
 			if (ethereum) {
 				const provider = new ethers.providers.Web3Provider(ethereum);
 				const signer = provider.getSigner();
-				const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+				const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
 				let waveCount = await wavePortalContract.getTotalWaves();
 				setWaveCount(waveCount.toNumber());
@@ -80,7 +80,7 @@ function WaveLogHeader() {
 			<p className="text-4xl font-extrabold text-gray-800 py-4">Wave log 👀</p>
 			<p>Check out all these people out here waving!</p>
 			{waveCount !== -1 && <p>We already have {waveCount} waves</p>}
-			{allWaves.map((wave) => <WaveLogBody wave={wave} />)}
+			{allWaves.map((wave, i) => <WaveLogBody wave={wave} key={i} />)}
 		</div>
 	)
 }
