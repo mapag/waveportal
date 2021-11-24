@@ -6,7 +6,8 @@ import WaveLogHeader from './WaveLog/WaveLogHeader';
 function App() {
   const [waveMessage, setWaveMessage] = useState("");
   const [currentAccount, setCurrentAccount] = useState("");
-  const [refreshWaves, setRefreshWaves] = useState(false);
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     checkIfWalletIsConnected();
@@ -63,29 +64,37 @@ function App() {
 
   const wave = async () => {
     try {
-      const { ethereum } = window;
+      if (!sendingMessage) {
+        setErrorMessage("")
+        setSendingMessage(true);
+        const { ethereum } = window;
 
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-        const waveTxn = await wavePortalContract.wave(waveMessage);
-        console.log("Mining...", waveTxn.hash);
+          // console.log(`Sending wave msg ${waveMessage}`);
+          const waveTxn = await wavePortalContract.wave(waveMessage);
+          console.log("Mining...");
 
-        await waveTxn.wait();
-        console.log("Mined -- ", waveTxn.hash);
-        setRefreshWaves(true);
+          await waveTxn.wait();
+          console.log("Mined -- ");
+          setSendingMessage(false);
+        } else {
+          console.log("Ethereum object doesn't exist!");
+        }
 
-      } else {
-        console.log("Ethereum object doesn't exist!");
       }
-    } catch (error) {
-      console.log(error)
+    }
+    catch (error) {
+      setErrorMessage(error.message);
+      setSendingMessage(false);
+      console.log("error:::", error.message)
     }
   }
 
-  
+
 
   return (
     <div className="m-auto flex justify-center my-4" style={{ maxWidth: "800px" }}>
@@ -105,10 +114,13 @@ function App() {
         <div className="m-auto">
           <div className="flex flex-col justify-center">
             <textarea onChange={event => setWaveMessage(event.target.value)} placeholder="Enter your message here :)" className="resize-none w-96 h-48 border-2 p-2 my-4"></textarea>
-            <button className="p-2 border border-black" onClick={wave}><p>Wave at me!</p></button>
+            <button className={`p-2 border border-black ${sendingMessage ? "cursor-not-allowed" : ""}`} onClick={wave}><p>Wave at me!</p></button>
           </div>
         </div>
-        <WaveLogHeader refreshWaves={refreshWaves}></WaveLogHeader>
+        {errorMessage && (
+          <p className="text-xl text-center font-light text-gray-700 py-8">Hola {errorMessage.toString()}</p>
+        )}
+        < WaveLogHeader sendingMessage={sendingMessage}></WaveLogHeader>
       </div>
 
     </div >
