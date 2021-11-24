@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from "ethers";
-import ABI from './utils/WavePortal.json'
-
+import { CONTRACT_ADDRESS, CONTRACT_ABI } from './utils/Constants';
 import WaveLogHeader from './WaveLog/WaveLogHeader';
 
 function App() {
@@ -12,9 +11,6 @@ function App() {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [])
-
-  const contractAddress = '0xBb4fe408E0ff18C5fFbC9b12783EFDf8B5C00eE5';
-  const contractABI = ABI.abi;
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -72,7 +68,7 @@ function App() {
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+        const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
         const waveTxn = await wavePortalContract.wave(waveMessage);
         console.log("Mining...", waveTxn.hash);
