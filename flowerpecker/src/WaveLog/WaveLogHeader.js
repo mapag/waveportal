@@ -4,17 +4,14 @@ import { CONTRACT_ADDRESS, CONTRACT_ABI } from '../utils/Constants';
 
 import WaveLogBody from './WaveLogBody';
 
-function WaveLogHeader(props) {
+function WaveLogHeader() {
 	const [waveCount, setWaveCount] = useState(-1);
 	const [allWaves, setAllWaves] = useState([]);
 
 	useEffect(() => {
-		if (!props.sendingMessage) {
-			getTotalWaves();
-			getAllWaves();
-		}
-
-	}, [props.sendingMessage]);
+		getTotalWaves();
+		getAllWaves();
+	}, []);
 
 	const getAllWaves = async () => {
 		try {
@@ -24,17 +21,10 @@ function WaveLogHeader(props) {
 				const signer = provider.getSigner();
 				const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-				/*
-				 * Call the getAllWaves method from your Smart Contract
-				 */
 				const waves = await wavePortalContract.getAllWaves();
 
-
-				/*
-				 * We only need address, timestamp, and message in our UI so let's
-				 * pick those out
-				 */
 				let wavesCleaned = [];
+
 				waves.forEach(wave => {
 					wavesCleaned.push({
 						address: wave.waver,
@@ -43,9 +33,6 @@ function WaveLogHeader(props) {
 					});
 				});
 
-				/*
-				 * Store our data in React State
-				 */
 				setAllWaves(wavesCleaned);
 			} else {
 				console.log("Ethereum object doesn't exist!")

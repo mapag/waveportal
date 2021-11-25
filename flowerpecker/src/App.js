@@ -117,7 +117,7 @@ function App() {
         {errorMessage && (
           <p className="text-xl text-center font-light text-gray-700 py-8">Hola {errorMessage.toString()}</p>
         )}
-        < WaveLogHeader sendingMessage={sendingMessage}></WaveLogHeader>
+        < WaveLogHeader></WaveLogHeader>
       </div>
 
     </div >
