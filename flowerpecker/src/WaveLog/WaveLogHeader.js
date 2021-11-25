@@ -32,8 +32,8 @@ function WaveLogHeader() {
 						message: wave.message
 					});
 				});
-
-				setAllWaves(wavesCleaned);
+				const sortedWaves = sortByTimestamp(wavesCleaned);
+				setAllWaves(sortedWaves);
 			} else {
 				console.log("Ethereum object doesn't exist!")
 			}
@@ -65,14 +65,12 @@ function WaveLogHeader() {
 		let wavePortalContract;
 
 		const onNewWave = (from, timestamp, message) => {
-			setAllWaves(prevState => [
-				...prevState,
-				{
-					address: from,
-					timestamp: new Date(timestamp * 1000),
-					message: message,
-				},
-			]);
+			setAllWaves(prevState => [{
+				address: from,
+				timestamp: new Date(timestamp * 1000),
+				message: message,
+			}, ...prevState]);
+			getTotalWaves();
 		};
 
 		if (window.ethereum) {
@@ -89,6 +87,15 @@ function WaveLogHeader() {
 			}
 		};
 	}, []);
+
+
+	const sortByTimestamp = (waves) => {
+		const messageIds = Object.keys(waves)
+
+		return messageIds.map(id => waves[id]).sort((a, b) =>
+			a.timeStamp < b.timeStamp ? 1 : -1
+		)
+	}
 
 	return (
 		<div className="m-auto flex flex-col justify-center py-8">

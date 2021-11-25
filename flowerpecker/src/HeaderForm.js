@@ -77,6 +77,7 @@ export default function HeaderForm() {
 					const waveTxn = await wavePortalContract.wave(waveMessage, { gasLimit: 300000 })
 					await waveTxn.wait();
 
+					setWaveMessage("");
 					setSendingMessage(false);
 				} else {
 					console.log("Ethereum object doesn't exist!");
