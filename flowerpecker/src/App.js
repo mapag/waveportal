@@ -65,6 +65,7 @@ function App() {
   const wave = async () => {
     try {
       if (!sendingMessage) {
+
         setErrorMessage("")
         setSendingMessage(true);
         const { ethereum } = window;
@@ -74,12 +75,9 @@ function App() {
           const signer = provider.getSigner();
           const wavePortalContract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-          // console.log(`Sending wave msg ${waveMessage}`);
-          const waveTxn = await wavePortalContract.wave(waveMessage);
-          console.log("Mining...");
-
+          const waveTxn = await wavePortalContract.wave(waveMessage, { gasLimit: 300000 })
           await waveTxn.wait();
-          console.log("Mined -- ");
+
           setSendingMessage(false);
         } else {
           console.log("Ethereum object doesn't exist!");
