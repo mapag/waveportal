@@ -92,7 +92,7 @@ function WaveLogHeader() {
 
 	return (
 		<div className="m-auto flex flex-col justify-center py-8">
-			<p className="text-4xl font-extrabold text-gray-800 py-4">Wave log 👀</p>
+			<p className="text-4xl font-extrabold text-gray-800 py-4">👀 Wave log</p>
 			<p>Check out all these people out here waving!</p>
 			{waveCount !== -1 && <p>We already have {waveCount} waves</p>}
 			{allWaves.map((wave, i) => <WaveLogBody wave={wave} key={i} />)}
